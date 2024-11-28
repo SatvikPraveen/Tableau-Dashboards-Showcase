@@ -46,7 +46,7 @@ This repository showcases interactive Tableau dashboards analyzing global mortal
 ## How to Explore
 
 1. Open `.twbx` files in Tableau Desktop to explore the dashboards.
-2. Use Tableau Public for an online preview: [https://public.tableau.com/app/profile/satvik.praveen4534/viz/Global_Mortality_Dashboard/Time-Series-Dashboard](#).
+2. Use Tableau Public for an online preview: [Link](https://public.tableau.com/app/profile/satvik.praveen4534/viz/Global_Mortality_Dashboard/Time-Series-Dashboard)
 
 ## Key Highlights
 
