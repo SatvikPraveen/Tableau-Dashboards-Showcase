@@ -7,15 +7,15 @@ Tableau Logs/
 *.log
 
 # Ignore specific Tableau temporary files
-~*.twb
-~*.twbx
-*.hyper
+# ~*.twb
+*.twbr
+# *.hyper
 
 # Ignore Python or Jupyter files (if any scripts used)
-*.ipynb_checkpoints
-__pycache__/
-*.pyc
-*.pyo
+# *.ipynb_checkpoints
+# __pycache__/
+# *.pyc
+# *.pyo
 
 # Ignore Excel or CSV backups (if using external tools)
 *.bak
