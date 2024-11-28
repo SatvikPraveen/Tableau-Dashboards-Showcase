@@ -1,4 +1,4 @@
-# tableau-dashboard-showcase
+# Tableau-Dashboards-Showcase
 
 ## Overview
 This repository contains a collection of Tableau dashboards created to analyze various datasets and demonstrate Tableau's data visualization and analytical capabilities. These dashboards showcase different techniques like time-series analysis, heatmaps, scatter plots, KPIs, and interactive filters to provide actionable insights.
@@ -7,7 +7,7 @@ This repository contains a collection of Tableau dashboards created to analyze v
 
 ## Repository Structure
 ```bash
-Tableau-Dashboards-Repository/
+Tableau-Dashboards-Showcase/
 ├── Global_Mortality_Analysis/
 │   ├── Dataset/
 │   │   └── IHME_GBD_2010_MORTALITY_AGE_SPECIFIC_BY_COUNTRY_1970_2010.csv
