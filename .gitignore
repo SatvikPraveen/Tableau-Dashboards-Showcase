@@ -8,7 +8,7 @@ Tableau Logs/
 
 # Ignore specific Tableau temporary files
 # ~*.twb
-# ~*.twbx
+*.twbr
 # *.hyper
 
 # Ignore Python or Jupyter files (if any scripts used)
