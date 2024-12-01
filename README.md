@@ -23,7 +23,7 @@ Tableau-Dashboards-Showcase/
 │   ├── Dataset/
 │   │   └── IHME_USA_STATE_HEALTH_SPENDING_2003_2019.xlsx
 │   ├── Images/
-│   │   ├──Dashboard1_Statewise_Spending_Insights_Per_Person_and_Standardized_Metrics.png
+│   │   ├── Dashboard1_Statewise_Spending_Insights_Per_Person_and_Standardized_Metrics.png
 │   │   ├── Dashboard2_Healthcare_Fractional_Expenditure_by_State_and_Year.png
 │   │   ├── Dashboard3_Statewise_Healthcare_Expenditure_Dental_Physician_and_Skilled_Nursing_Focus.png
 │   ├── Statewise_Healthcare_Spending_Dashboards.twbx
