@@ -18,6 +18,8 @@ This project focuses on analyzing state-level healthcare expenditure data across
 
 ### 1. **Statewise Spending and Standardized Spending Per Person**
 
+![Dashboard 1](Images/Dashboard1_Statewise_Spending_Insights_Per_Person_and_Standardized_Metrics.png)
+
 - **Description**:
   - Visualizes statewise healthcare spending and standardized spending per person.
   - Allows comparisons across states and identification of spending trends.
@@ -31,6 +33,8 @@ This project focuses on analyzing state-level healthcare expenditure data across
 
 ### 2. **Statewise Fractional Expenditure Breakdown**
 
+![Dashboard 2](Images/Dashboard2_Healthcare_Fractional_Expenditure_by_State_and_Year.png)
+
 - **Description**:
   - Displays yearly fractional healthcare expenditure broken down into categories such as Medicare, Medicaid, and private expenditure.
   - Visualizes spending in the form of a heatmap and a KPI section for detailed state-level analysis.
@@ -43,6 +47,8 @@ This project focuses on analyzing state-level healthcare expenditure data across
 ---
 
 ### 3. **Category-Specific Expenditure Analysis**
+
+![Dashboard 3](Images/Dashboard3_Statewise_Healthcare_Expenditure_Dental_Physician_and_Skilled_Nursing_Focus.png)
 
 - **Description**:
   - Provides an in-depth look at expenditures on dental care, skilled nursing, physicians, and other healthcare categories.
