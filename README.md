@@ -44,14 +44,17 @@ Dashboards analyzing global mortality trends using age-specific and country-spec
 #### Key Dashboards:
 
 - **Global Mortality Overview**:
+
+  - Workbook: `Global-Mortality-Rate-Dashboard.twb`
   - Interactive map with filters for continent, year, sex, and age group.
   - Displays global median death rates and total deaths by country.
   - Includes KPIs for quick insights.
+
 - **Time Series Analysis**:
+
+  - Workbook: `Time-Series-Dashboard.twb`
   - Line chart depicting trends in mortality over time.
   - Includes dynamic KPIs and year-over-year percentage change.
-- **Dynamic KPIs**:
-  - Tabular insights for year-over-year mortality analysis.
 
 #### Dataset:
 
@@ -68,13 +71,17 @@ Dashboards analyzing state-level healthcare expenditure trends across various ca
 
 - **Statewise Spending and Standardized Spending Per Person**:
 
+  - Workbook: `Statewise_Spending_Insights_Per_Person_and_Standardized_Metrics_Dashboard1.twb`
   - A map and treemap visualizing healthcare spending per person and standardized metrics across states.
 
 - **Statewise Fractional Expenditure Breakdown**:
 
+  - Workbook: `Healthcare_Fractional_Expenditure_by_State_and_Year_Dashboard2.twb`
   - Heatmap and KPIs for analyzing fractional spending by state and year.
 
 - **Category-Specific Expenditure Analysis**:
+
+  - Workbook: `Statewise_Healthcare_Expenditure_Dental_Physician_and_Skilled_Nursing_Focus_Dashboard3.twb`
   - Bubble charts highlighting expenditure on dental care, skilled nursing, and other categories.
 
 #### Dataset:
