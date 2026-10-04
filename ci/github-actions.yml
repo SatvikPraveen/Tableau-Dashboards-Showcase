@@ -1,0 +1,56 @@
+# GitHub Actions workflow for this repository.
+#
+# It lives here, outside .github/workflows/, because the automation that
+# prepared this commit could not create workflow files. To enable CI, move it:
+#
+#   git mv ci/github-actions.yml .github/workflows/ci.yml
+#
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  reproducibility:
+    name: Verify data and audit (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Verify checksums, schema and aggregate identities
+        run: python -m tools.verify_data
+      - name: Unit and regression tests
+        run: python -m unittest discover -s tests -t . -v
+      - name: Generated documentation is up to date
+        run: |
+          python -m tools.audit --check
+          python -m tools.inspect_workbooks --check
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install "ruff>=0.6"
+      - run: ruff check tools tests
+      - run: ruff format --check tools tests

@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: help verify audit inventory docs test lint check
+.PHONY: help verify audit inventory docs checksums test lint check
 
 help:  ## List available targets
 	@grep -E '^[a-z]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-10s %s\n", $$1, $$2}'
@@ -17,6 +17,12 @@ inventory:  ## Print the workbook inventory
 docs:  ## Regenerate docs/analytical_audit.md and docs/workbook_inventory.md
 	$(PYTHON) -m tools.audit --write
 	$(PYTHON) -m tools.inspect_workbooks --write
+
+checksums:  ## Rewrite data/CHECKSUMS.sha256 after an intentional data or workbook change
+	@{ head -n 2 data/CHECKSUMS.sha256; \
+	   find 0*/ -type f \( -name '*.csv' -o -name '*.xlsx' -o -name '*.XLSX' -o -name '*.twb' \) \
+	   | LC_ALL=C sort | xargs -d '\n' sha256sum; } > data/CHECKSUMS.sha256.tmp
+	mv data/CHECKSUMS.sha256.tmp data/CHECKSUMS.sha256
 
 test:  ## Run the unit and regression tests
 	$(PYTHON) -m unittest discover -s tests -t . -v
