@@ -1,0 +1,25 @@
+name: Analytical issue
+description: A number, chart or claim that looks wrong
+labels: ["analysis"]
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Dashboard and worksheet
+      placeholder: "Global Mortality > KPIs-Total_Deaths"
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: What is shown
+      description: Include the filter settings and the exact value.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected, and the evidence
+      description: A calculation from the raw data, a reference, or a reproducible snippet.
+    validations:
+      required: true
