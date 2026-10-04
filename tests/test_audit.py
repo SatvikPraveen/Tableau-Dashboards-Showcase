@@ -49,6 +49,13 @@ class ReproducePublishedNumbers(unittest.TestCase):
         self.assertEqual(self.s["kpi_pp_2015"], audit.PUBLISHED["spending_kpi_2015_per_person"])
         self.assertEqual(self.s["kpi_std_2015"], audit.PUBLISHED["spending_kpi_2015_standardized"])
 
+    def test_dashboard2_kpis_match_raw_shares(self):
+        published = {k: float(v) for k, v in audit.PUBLISHED["spending_dashboard2_alaska_2015"].items()}
+        self.assertEqual(self.s["alaska_2015"], published)
+
+    def test_growth_rate_fields_are_unused(self):
+        self.assertEqual(len(self.s["unused_growth_fields"]), 10)
+
     def test_spending_coverage(self):
         self.assertEqual(self.s["years"], [2015, 2016, 2017, 2018, 2019])
         self.assertEqual(self.s["states"], 51)

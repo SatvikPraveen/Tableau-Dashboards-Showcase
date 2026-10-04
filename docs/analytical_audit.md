@@ -30,6 +30,7 @@ below are recommendations.
 | [S4](#s4) | Uncertainty intervals are discarded | Medium | Caveat |
 | [S5](#s5) | Shares are whole percentages | Low | Verified OK |
 | [S6](#s6) | Growth-rate tables need their definitions alongside them | Info | Caveat |
+| [S7](#s7) | Payer and service shares are correct for a single year | Low | Verified OK |
 
 <a id="m1"></a>
 
@@ -197,6 +198,20 @@ below are recommendations.
 
 - The sheets have no title row. Their footnotes read: e9d, "Values in the table below are based on forecasted spending estimates before controlling for age, regional price, and other factors. Growth rates are calculating after adjusting spending per person to 2020 USD."; e9e, "Values in the table are based on forecasted spending estimates after controlling for age, price, and other factors."
 - The reference period of the growth rates is not stated in the file. Confirm it against the IHME codebook before interpreting the values.
+- None of the 10 calculated fields defined on these tables is used by any worksheet: `Num_OOP`, `Num_OOP5`, `Num_aggregate`, `Num_aggregate5`, `Num_medicaid`, `Num_medicaid_5`, `Num_medicare`, `Num_medicare5`, `Num_private`, `Num_private5`.
+
+**Remedy.** Either remove the unused fields, or build a growth-rate view that shows the intervals (see S4).
+
+<a id="s7"></a>
+
+## S7. Payer and service shares are correct for a single year
+
+**Severity:** Low | **Status:** Verified OK | **Where:** `KPIs_b`, `Medicare_Map`, `State-wise_Fraction_Expenditure`, `State-wise_Skilled_Professionals`, `State-wise_dental_physician`, `Table_Yearly_Fractional_Expenditure` (`02_Cost_of_Care_US_State_Healthcare_Spending_Analysis/Images/Dashboard2_Healthcare_Fractional_Expenditure_by_State_and_Year.png`)
+
+- With Year = 2015 and State = Alaska, as in the screenshot, the KPI tiles show Private 31%, Medicare 9%, Medicaid 17%, OOP 43%. The raw table e9b gives Private 31%, Medicare 9%, Medicaid 17%, OOP 43%.
+- These worksheets aggregate the share fields with `SUM`, as in S1. They are correct only while a single year is selected. With Year = *(All)* each cell becomes the sum of five annual shares, roughly 5x the true value.
+
+**Remedy.** Use `AVG` for shares, or remove the *(All)* option from the year filter.
 
 ## Reproducing this report
 

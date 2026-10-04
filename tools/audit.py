@@ -43,10 +43,22 @@ PUBLISHED = {
     "spending_standardized_legend": (44_710, 69_830),  # same image
     "spending_kpi_2015_per_person": 483_460,  # same image, truncated to "483,46"
     "spending_kpi_2015_standardized": 519_250,  # same image, truncated to "519,25"
+    # Images/Dashboard2_Healthcare_Fractional_Expenditure_by_State_and_Year.png (Year 2015, Alaska)
+    "spending_dashboard2_alaska_2015": {
+        "Fraction Private": 31,
+        "Fraction Medicare": 9,
+        "Fraction Medicaid": 17,
+        "Fraction OOP": 43,
+    },
 }
 
 MORTALITY_IMG_TS = "01_Global_Mortality_Analysis/Images/Dashboard1_Time_Series_Number_of_Deaths.png"
 MORTALITY_IMG_MAP = "01_Global_Mortality_Analysis/Images/Dashboard2_Global_Mortality_Rate.png"
+SPENDING_IMG_2 = (
+    "02_Cost_of_Care_US_State_Healthcare_Spending_Analysis/Images/"
+    "Dashboard2_Healthcare_Fractional_Expenditure_by_State_and_Year.png"
+)
+SPENDING_WORKBOOK = paths.SPENDING_DIR / "Statewise_Healthcare_Spending_Analysis.twb"
 SPENDING_IMG_1 = (
     "02_Cost_of_Care_US_State_Healthcare_Spending_Analysis/Images/"
     "Dashboard1_Statewise_Spending_Insights_Per_Person_and_Standardized_Metrics.png"
@@ -94,6 +106,19 @@ def worksheets_using(field_ref: str, workbook=paths.MORTALITY_DIR / "Global_Mort
     """Names of worksheets whose XML references ``field_ref`` (e.g. ``sum:Number of Deaths``)."""
     root = ET.parse(workbook).getroot()
     return sorted(ws.get("name") for ws in root.iter("worksheet") if field_ref in ET.tostring(ws, encoding="unicode"))
+
+
+def calculated_field_usage(workbook=SPENDING_WORKBOOK) -> Dict[str, List[str]]:
+    """Map each calculated field caption to the worksheets that reference it."""
+    root = ET.parse(workbook).getroot()
+    internal: Dict[str, str] = {}
+    for column in root.iter("column"):
+        if column.get("caption") and column.find("calculation") is not None:
+            internal.setdefault(column.get("caption"), column.get("name", "").strip("[]"))
+    sheets = {ws.get("name"): ET.tostring(ws, encoding="unicode") for ws in root.iter("worksheet")}
+    return {
+        caption: sorted(name for name, xml in sheets.items() if f":{ref}:" in xml) for caption, ref in internal.items()
+    }
 
 
 def _code_list(names: List[str]) -> str:
@@ -346,6 +371,19 @@ def spending_findings(tables: Dict[str, ihme.SpendingTable]) -> Tuple[List[Findi
     ]
     states, years = ihme.coverage(e9a)
 
+    usage = calculated_field_usage()
+    share_fields = sorted(c for c in usage if c.endswith("_fraction_num") or c.endswith("_num_fraction"))
+    summed_share_sheets = sorted({ws for c in share_fields for ws in usage[c]})
+    growth_fields = sorted(
+        c
+        for c in usage
+        if c.startswith("Num_")
+        and c not in {"Num_total_spending", "Num_spending_per_person", "Num_standardized_spending_per_person"}
+    )
+    unused_growth = [c for c in growth_fields if not usage[c]]
+    alaska = next(r for r in tables["Table e9b"].records if r["State"] == "Alaska" and r["Year"] == 2015)
+    alaska_points = {k: alaska[k].point for k in PUBLISHED["spending_dashboard2_alaska_2015"]}
+
     stats = {
         "legend_pp": (min(per_person.values()), max(per_person.values())),
         "legend_std": (min(standardized.values()), max(standardized.values())),
@@ -357,6 +395,9 @@ def spending_findings(tables: Dict[str, ihme.SpendingTable]) -> Tuple[List[Findi
         "zero_e": zero_e,
         "years": years,
         "states": states,
+        "alaska_2015": alaska_points,
+        "unused_growth_fields": unused_growth,
+        "summed_share_sheets": summed_share_sheets,
     }
 
     findings = [
@@ -469,7 +510,36 @@ def spending_findings(tables: Dict[str, ihme.SpendingTable]) -> Tuple[List[Findi
                 + '"',
                 "The reference period of the growth rates is not stated in the file. Confirm it "
                 "against the IHME codebook before interpreting the values.",
+                (
+                    f"None of the {len(growth_fields)} calculated fields defined on these tables is used by "
+                    f"any worksheet: {_code_list(unused_growth)}."
+                    if len(unused_growth) == len(growth_fields)
+                    else f"{len(unused_growth)} of the {len(growth_fields)} calculated fields defined on these "
+                    f"tables are not used by any worksheet: {_code_list(unused_growth)}."
+                ),
             ],
+            remedy="Either remove the unused fields, or build a growth-rate view that shows the intervals (see S4).",
+        ),
+        Finding(
+            "S7",
+            "Payer and service shares are correct for a single year",
+            "Low",
+            "Verified OK",
+            f"{_code_list(summed_share_sheets)} (`{SPENDING_IMG_2}`)",
+            [
+                "With Year = 2015 and State = Alaska, as in the screenshot, the KPI tiles show "
+                + ", ".join(
+                    f"{k.replace('Fraction ', '')} {v}%"
+                    for k, v in PUBLISHED["spending_dashboard2_alaska_2015"].items()
+                )
+                + ". The raw table e9b gives "
+                + ", ".join(f"{k.replace('Fraction ', '')} {v:g}%" for k, v in alaska_points.items())
+                + ".",
+                "These worksheets aggregate the share fields with `SUM`, as in S1. They are correct "
+                "only while a single year is selected. With Year = *(All)* each cell becomes the sum "
+                "of five annual shares, roughly 5x the true value.",
+            ],
+            remedy="Use `AVG` for shares, or remove the *(All)* option from the year filter.",
         ),
     ]
     return findings, stats
