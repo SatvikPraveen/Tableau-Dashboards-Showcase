@@ -1,0 +1,50 @@
+cff-version: 1.2.0
+message: "If you use these dashboards or the audit tooling, please cite this repository and the underlying IHME datasets."
+title: "Tableau Dashboards Showcase: Global Mortality and US State Health Spending"
+type: software
+authors:
+  - family-names: Praveen
+    given-names: Satvik
+    email: satvikpraveen707@gmail.com
+repository-code: "https://github.com/SatvikPraveen/Tableau-Dashboards-Showcase"
+url: "https://public.tableau.com/app/profile/satvik.praveen4534/vizzes"
+license: MIT
+version: "1.1.0"
+date-released: "2026-10-04"
+keywords:
+  - tableau
+  - data visualization
+  - global burden of disease
+  - mortality
+  - health expenditure
+  - reproducibility
+references:
+  - type: data
+    title: "Global Burden of Disease Study 2010 (GBD 2010) Mortality Results 1970-2010"
+    authors:
+      - name: "Global Burden of Disease Collaborative Network"
+    publisher:
+      name: "Institute for Health Metrics and Evaluation (IHME)"
+    year: 2012
+    url: "https://ghdx.healthdata.org/record/ihme-data/gbd-2010-mortality-results-1970-2010"
+  - type: article
+    title: "Age-specific and sex-specific mortality in 187 countries, 1970-2010: a systematic analysis for the Global Burden of Disease Study 2010"
+    authors:
+      - family-names: Wang
+        given-names: Haidong
+      - name: "et al."
+    journal: "The Lancet"
+    volume: 380
+    issue: 9859
+    start: 2071
+    end: 2094
+    year: 2012
+    doi: "10.1016/S0140-6736(12)61719-X"
+  - type: data
+    title: "United States Health Expenditure by State, Payer, and Type of Care, 2003-2019"
+    authors:
+      - name: "Institute for Health Metrics and Evaluation (IHME)"
+    publisher:
+      name: "Institute for Health Metrics and Evaluation (IHME)"
+    year: 2022
+    url: "https://ghdx.healthdata.org/record/ihme-data/united-states-health-spending-by-state-payer-type-service-2003-2019"
