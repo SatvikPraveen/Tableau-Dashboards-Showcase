@@ -1,0 +1,22 @@
+# Default: normalise text files to LF in the repository.
+* text=auto eol=lf
+
+# Tableau workbooks are XML saved by Tableau Desktop with CRLF line endings.
+# Store them byte-for-byte so a checkout reproduces the exact published file
+# (the SHA-256 manifest in data/CHECKSUMS.sha256 depends on this).
+*.twb   -text linguist-generated=true
+*.tds   -text linguist-generated=true
+
+# Binary assets: never diff, never convert line endings.
+*.twbx  binary
+*.hyper binary
+*.xlsx  binary
+*.XLSX  binary
+*.png   binary
+*.jpg   binary
+
+# Raw data files are hashed; keep their bytes stable.
+*.csv   -text linguist-vendored=true
+
+# Language statistics: count the tooling, not the vendored data.
+*.md    linguist-documentation=true

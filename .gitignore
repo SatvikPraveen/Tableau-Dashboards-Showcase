@@ -1,25 +1,40 @@
-# Ignore operating system files
+# --- Operating system --------------------------------------------------------
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# Ignore Tableau auto-generated logs
+# --- Editors / IDEs ----------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+
+# --- Tableau -----------------------------------------------------------------
+# Logs, recovery files and local repository state written by Tableau Desktop.
 Tableau Logs/
 *.log
-
-# Ignore specific Tableau temporary files
-# ~*.twb
 *.twbr
-# *.hyper
+~*.twb
+# Packaged workbooks and extracts embed IHME data; see DATA_LICENSE.md
+# before committing either of them.
+*.twbx
+*.hyper
+*.tde
 
-# Ignore Python or Jupyter files (if any scripts used)
-# *.ipynb_checkpoints
-# __pycache__/
-# *.pyc
-# *.pyo
-
-# Ignore Excel or CSV backups (if using external tools)
+# --- Office lock / backup files ---------------------------------------------
+~$*
 *.bak
 *.tmp
 
-# Ignore environment settings
+# --- Python (audit tooling) --------------------------------------------------
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+
+# --- Environment -------------------------------------------------------------
 .env
