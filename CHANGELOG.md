@@ -23,8 +23,8 @@ raw data are unchanged byte-for-byte.
 - Regression tests that pin the published values, with negative controls.
 - `DATA_LICENSE.md`, `CITATION.cff`, `CONTRIBUTING.md`, issue and pull request
   templates, `Makefile`, `pyproject.toml`, `.gitattributes` and `.editorconfig`.
-- A GitHub Actions workflow in `ci/github-actions.yml`. Move it to
-  `.github/workflows/` to enable it.
+- A GitHub Actions workflow in `.github/workflows/ci.yml` that verifies the
+  data, runs the tests, checks generated docs are current and lints the code.
 
 ### Changed
 

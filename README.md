@@ -112,7 +112,7 @@ Tableau-Dashboards-Showcase/
 │   ├── analytical_audit.md       # Generated: findings with reproduced numbers
 │   └── workbook_inventory.md     # Generated: workbook structure and formulas
 ├── data/CHECKSUMS.sha256         # SHA-256 manifest of data and workbooks
-├── ci/github-actions.yml         # CI workflow (move to .github/workflows/ to enable)
+├── .github/workflows/ci.yml      # CI: data verification, tests, doc freshness, lint
 ├── CITATION.cff · DATA_LICENSE.md · CONTRIBUTING.md · CHANGELOG.md
 ├── Makefile · pyproject.toml
 └── LICENSE

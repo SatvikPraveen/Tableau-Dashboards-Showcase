@@ -1,11 +1,3 @@
-# GitHub Actions workflow for this repository.
-#
-# It lives here, outside .github/workflows/, because the automation that
-# prepared this commit could not create workflow files. To enable CI, move it:
-#
-#   git mv ci/github-actions.yml .github/workflows/ci.yml
-#
-
 name: CI
 
 on:
