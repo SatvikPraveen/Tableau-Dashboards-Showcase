@@ -34,6 +34,7 @@ raw data are unchanged byte-for-byte.
 - Corrected references to `.twbx` files and data file names that do not exist.
 - Described `% Change in Deaths` as decade-on-decade, not year-over-year.
 - Set the copyright holder to Satvik Praveen.
+- `make checksums` now uses Python's `hashlib`, so it also works on macOS.
 
 ## [1.0.0] - 2024-11-30
 
