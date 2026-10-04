@@ -1,5 +1,5 @@
 # SHA-256 manifest of third-party data files and Tableau workbooks.
-# Verify with:  sha256sum -c data/CHECKSUMS.sha256   (run from the repository root)
+# Verify with:  python -m tools.verify_data   or   grep -v "^#" data/CHECKSUMS.sha256 | sha256sum -c
 59e8a76ac5ce304481d959243ecf0b9dbc703a62e81f4cfa7646ff908ec73dc5  01_Global_Mortality_Analysis/Dataset/IHME_GBD_2010_MORTALITY_AGE_SPECIFIC_BY_COUNTRY_1970_2010.csv
 ed793a40e790a42c5746b579045a045fe9b898b785ea5da6b5f523a0e776fc8d  01_Global_Mortality_Analysis/Global-Mortality-Rate-Dashboard.twb
 eee0c55f95c61821822a1437c9ec018750b9ada43d3f483864590e2372e1e25c  01_Global_Mortality_Analysis/Global_Mortality_Analysis.twb
