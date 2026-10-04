@@ -43,9 +43,11 @@ uncertainty interval, for example `$8170 ($8020 - $8320)`.
 | `Table e9d` | 51 | State, Aggregate, Medicaid, Medicare, OOP, Private | Growth rates in spending per person, *before* controlling for age, price and other factors |
 | `Table e9e` | 51 | State, Aggregate, Medicaid, Medicare, OOP, Private | Growth rates, *after* controlling for age, price and other factors |
 
-"Standardized" spending is adjusted for differences in age structure and prices
-between states, per the table footnotes. Shares are rounded to whole percents, so
-a state's shares sum to 98-102% rather than exactly 100%.
+The file does not define "standardized" spending. The growth-rate footnotes use
+"controlling for age, price, and other factors" for the adjusted series, which
+suggests a similar adjustment, but confirm the definition in the IHME codebook
+before relying on it. Shares are rounded to whole percents, so a state's shares
+sum to 98-102% rather than exactly 100%.
 
 ## Workbooks
 
