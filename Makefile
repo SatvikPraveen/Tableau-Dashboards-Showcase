@@ -19,10 +19,7 @@ docs:  ## Regenerate docs/analytical_audit.md and docs/workbook_inventory.md
 	$(PYTHON) -m tools.inspect_workbooks --write
 
 checksums:  ## Rewrite data/CHECKSUMS.sha256 after an intentional data or workbook change
-	@{ head -n 2 data/CHECKSUMS.sha256; \
-	   find 0*/ -type f \( -name '*.csv' -o -name '*.xlsx' -o -name '*.XLSX' -o -name '*.twb' \) \
-	   | LC_ALL=C sort | xargs -d '\n' sha256sum; } > data/CHECKSUMS.sha256.tmp
-	mv data/CHECKSUMS.sha256.tmp data/CHECKSUMS.sha256
+	$(PYTHON) -m tools.verify_data --write-checksums
 
 test:  ## Run the unit and regression tests
 	$(PYTHON) -m unittest discover -s tests -t . -v

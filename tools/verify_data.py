@@ -3,6 +3,7 @@
 Run from the repository root::
 
     python -m tools.verify_data
+    python -m tools.verify_data --write-checksums   # after an intentional change
 
 Exit status is non-zero if any check fails. The checks are deliberately
 strict about structure (columns, coverage) and tolerant only where IHME's
@@ -12,6 +13,7 @@ next to the check that uses it.
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import sys
 from collections import defaultdict
@@ -64,6 +66,25 @@ def check_checksums() -> List[CheckResult]:
         actual = sha256(target)
         results.append((f"sha256 {relative}", actual == expected, actual[:12]))
     return results
+
+
+# Files pinned by the manifest, relative to the repository root.
+TRACKED_SUFFIXES = {".csv", ".xlsx", ".twb"}
+
+
+def write_checksums() -> int:
+    """Rewrite the manifest, keeping its comment header."""
+    header = [line for line in paths.CHECKSUMS.read_text(encoding="utf-8").splitlines() if line.startswith("#")]
+    tracked = sorted(
+        path.relative_to(paths.REPO_ROOT).as_posix()
+        for directory in (paths.MORTALITY_DIR, paths.SPENDING_DIR)
+        for path in directory.rglob("*")
+        if path.is_file() and path.suffix.lower() in TRACKED_SUFFIXES
+    )
+    lines = header + [f"{sha256(paths.REPO_ROOT / relative)}  {relative}" for relative in tracked]
+    paths.CHECKSUMS.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print(f"Wrote {len(tracked)} entries to {paths.CHECKSUMS.relative_to(paths.REPO_ROOT)}.")
+    return 0
 
 
 def check_mortality() -> List[CheckResult]:
@@ -153,6 +174,10 @@ def run(checks: List[Callable[[], List[CheckResult]]]) -> int:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--write-checksums", action="store_true", help="regenerate data/CHECKSUMS.sha256")
+    if parser.parse_args().write_checksums:
+        return write_checksums()
     return run([check_checksums, check_mortality, check_spending])
 
 
