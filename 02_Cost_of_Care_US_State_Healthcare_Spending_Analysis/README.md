@@ -1,103 +1,138 @@
-# Statewise Healthcare Spending Analysis
+# Cost of Care: US State Health Spending, 2015-2019
 
-## Overview
+Interactive Tableau dashboards on personal health care spending in the 50 US states and
+the District of Columbia: spending per person, its split by payer, and its split by
+type of care. The data are IHME estimates from the *US Health Expenditure by State,
+Payer, and Type of Care* release.
 
-This project focuses on analyzing state-level healthcare expenditure data across various categories such as Medicare, Medicaid, private expenditure, and skilled nursing. The dashboards provide visual insights into spending trends, fractional expenditures, and category-specific distributions across states in the United States.
+[View on Tableau Public](https://public.tableau.com/app/profile/satvik.praveen4534/viz/Statewise_Healthcare_Spending_Dashboards/Dashboard2_HealthcareFractionalExpenditurebyStateandYear)
+· [Analytical audit](../docs/analytical_audit.md)
+· [Workbook inventory](../docs/workbook_inventory.md)
 
----
+> [!IMPORTANT]
+> Per-person spending and payer shares are aggregated with `SUM`. They are correct
+> when a single year is selected, as in Dashboards 2 and 3. With Year = *(All)*, as in
+> Dashboard 1, they add up five annual values. See [Known limitations](#known-limitations).
 
-## Tableau Workbook
+## Questions
 
-- **File Name**: `Statewise_Healthcare_Spending_Dashboards.twbx`
-- **Description**: This Tableau workbook consolidates all three dashboards, allowing users to navigate between them seamlessly. Each dashboard focuses on a specific aspect of statewise healthcare expenditure analysis.
-- **View Online**: The workbook is available on [Tableau Public](https://public.tableau.com/app/profile/satvik.praveen4534/viz/Statewise_Healthcare_Spending_Dashboards/Dashboard2_HealthcareFractionalExpenditurebyStateandYear?publish=yes).
+1. How much does health care cost per person in each state, before and after adjusting for age and prices?
+2. How is each state's spending split between Medicare, Medicaid, private insurance and out-of-pocket payments?
+3. How do states differ in the share spent on hospitals, physicians, dental care and skilled nursing?
 
----
+## Data
+
+| | |
+|---|---|
+| **Dataset** | United States Health Expenditure by State, Payer, and Type of Care, 2003-2019 ([GHDx record](https://ghdx.healthdata.org/record/ihme-data/united-states-health-spending-by-state-payer-type-service-2003-2019)) |
+| **File** | `Dataset/IHME_USA_STATE_HEALTH_SPENDING_2003_2019_DATA_TABLES_Y2022M08D23.XLSX` |
+| **Coverage of this file** | 51 states (50 + DC) × **2015-2019**. The release spans 2003-2019, but these data tables contain only 2015-2019. |
+| **Units** | USD. The growth-rate footnotes state 2020 USD. |
+| **License** | IHME Free-of-Charge Non-Commercial User Agreement (see [DATA_LICENSE.md](../DATA_LICENSE.md)) |
+
+Every value is published as `point (lower - upper)`, a point estimate with its
+uncertainty interval, for example `$8170 ($8020 - $8320)`.
+
+### Data dictionary
+
+| Sheet | Rows | Columns | Content |
+|---|---:|---|---|
+| `Table e9a` | 255 | State, Year, Total Spending, Spending per Person, Standardized Spending per Person | Total spending in billions of USD. Per-person spending, raw and standardized. |
+| `Table e9b` | 255 | State, Year, Fraction Medicare / Medicaid / Private / OOP | Share of spending by payer, in whole percent |
+| `Table e9c` | 255 | State, Year, Fraction Hospital / Physician/clinical services / Skilled nursing / Home health / Pharmaceuticals / Dental / Other professional / Other | Share of spending by type of care, in whole percent |
+| `Table e9d` | 51 | State, Aggregate, Medicaid, Medicare, OOP, Private | Growth rates in spending per person, *before* controlling for age, price and other factors |
+| `Table e9e` | 51 | State, Aggregate, Medicaid, Medicare, OOP, Private | Growth rates, *after* controlling for age, price and other factors |
+
+"Standardized" spending is adjusted for differences in age structure and prices
+between states, per the table footnotes. Shares are rounded to whole percents, so
+a state's shares sum to 98-102% rather than exactly 100%.
+
+## Workbooks
+
+| File | Contents |
+|---|---|
+| `Statewise_Healthcare_Spending_Analysis.twb` | Main workbook with all three dashboards and twelve worksheets |
+| `Statewise_Spending_Insights_Per_Person_and_Standardized_Metrics_Dashboard1.twb` | Standalone export of Dashboard 1 |
+| `Healthcare_Fractional_Expenditure_by_State_and_Year_Dashboard2.twb` | Standalone export of Dashboard 2 |
+| `Statewise_Healthcare_Expenditure_Dental_Physician_and_Skilled_Nursing_Focus_Dashboard3.twb` | Standalone export of Dashboard 3 |
+
+The text cells are turned into numbers with calculated fields. Examples are
+`Num_spending_per_person`, defined as `INT(REPLACE(SPLIT([F4], " ", 1), "$", ""))`, and
+`medicare_fraction_num`, defined as `INT(LEFT(..., FIND(..., "%") - 1))`. These keep the
+point estimate and drop the interval. All formulas are listed in the
+[workbook inventory](../docs/workbook_inventory.md).
 
 ## Dashboards
 
-### 1. **Statewise Spending and Standardized Spending Per Person**
+### 1. Spending per person and standardized spending
 
-![Dashboard 1](Images/Dashboard1_Statewise_Spending_Insights_Per_Person_and_Standardized_Metrics.png)
+![Dashboard 1: map of spending per person and treemap of standardized spending per person by state](Images/Dashboard1_Statewise_Spending_Insights_Per_Person_and_Standardized_Metrics.png)
 
-- **Description**:
-  - Visualizes statewise healthcare spending and standardized spending per person.
-  - Allows comparisons across states and identification of spending trends.
-- **Key Features**:
-  - A map visualization highlighting spending per person across states.
-  - A treemap showcasing standardized spending.
-  - Interactive filters for year and state-level insights.
-- **Use Case**: Quickly identify states with the highest and lowest spending per person.
+A choropleth of spending per person and a treemap of standardized spending per person,
+with year and state filters and a KPI table.
 
----
+### 2. Spending by payer
 
-### 2. **Statewise Fractional Expenditure Breakdown**
+![Dashboard 2: table of payer shares by state, Medicare share map and KPI tiles](Images/Dashboard2_Healthcare_Fractional_Expenditure_by_State_and_Year.png)
 
-![Dashboard 2](Images/Dashboard2_Healthcare_Fractional_Expenditure_by_State_and_Year.png)
+A table of the Medicare, Medicaid, private and out-of-pocket shares for every state, a
+map of the Medicare share, and KPI tiles for the selected state.
 
-- **Description**:
-  - Displays yearly fractional healthcare expenditure broken down into categories such as Medicare, Medicaid, and private expenditure.
-  - Visualizes spending in the form of a heatmap and a KPI section for detailed state-level analysis.
-- **Key Features**:
-  - Detailed table for fractional spending across all states.
-  - Map visualizing Medicare fractional expenditure.
-  - KPI cards summarizing key metrics such as private and Medicaid expenditure for selected states.
-- **Use Case**: Compare category-wise spending across states and observe trends over the years.
+### 3. Spending by type of care
 
----
+![Dashboard 3: table of service-type shares and bubble charts for dental, physician and skilled nursing shares](Images/Dashboard3_Statewise_Healthcare_Expenditure_Dental_Physician_and_Skilled_Nursing_Focus.png)
 
-### 3. **Category-Specific Expenditure Analysis**
+A table of service-type shares and two packed-bubble charts. One shows dental and
+physician shares and the other shows physician and skilled nursing shares.
 
-![Dashboard 3](Images/Dashboard3_Statewise_Healthcare_Expenditure_Dental_Physician_and_Skilled_Nursing_Focus.png)
+## Known limitations
 
-- **Description**:
-  - Provides an in-depth look at expenditures on dental care, skilled nursing, physicians, and other healthcare categories.
-  - Utilizes bubble charts to visually represent expenditure distributions.
-- **Key Features**:
-  - Bubble chart for dental and physician expenditure.
-  - Bubble chart for skilled nursing and other healthcare categories.
-  - Interactive filters for year-based and category-specific exploration.
-- **Use Case**: Highlight and compare spending across specific healthcare categories.
+These findings come from the [analytical audit](../docs/analytical_audit.md), which
+reproduces each published number from the raw file. The workbooks are kept as
+published.
 
----
+| ID | Issue | Effect | Fix |
+|---|---|---|---|
+| S1 | Dashboard 1 sums per-person spending over years when Year = *(All)* | Legend reads 35,090-70,790 USD instead of a single-year range of 6,720-14,500 USD | Use `AVG`, or require one year |
+| S2 | `KPIs_a` sums per-person values across states | 483,460 USD for 2015 has no meaning | Population-weighted mean: 9,160 USD per person in 2015 |
+| S3 | Documentation described the data as 2003-2019 | The file covers 2015-2019 only | Corrected here |
+| S4 | Uncertainty intervals are dropped | Most payer-level growth-rate intervals include zero | Show intervals; do not rank states on them |
+| S5 | Shares are whole percents | Differences of 1-2 points are within rounding | Interpret accordingly |
+| S6 | Growth-rate fields (e9d/e9e) are defined but unused | None | Remove them, or add a view with intervals |
+| S7 | Shares use `SUM` | Correct for one year, as published. About 5× too high under *(All)*. | Use `AVG` |
 
-## Dataset
+Population-weighted national spending per person can be recovered from the file
+itself, because population equals total spending divided by spending per person:
 
-- **Source**: IHME USA State Health Spending Data
-- **File**: `IHME_USA_STATE_HEALTH_SPENDING_2003_2019.xlsx`
-- **Details**:
-  - Includes state-level healthcare spending data from 2003 to 2019.
-  - Categorized into various healthcare expenditure types such as Medicare, Medicaid, private expenditure, and specialized care.
+| Year | USD per person, population-weighted | Unweighted mean of states |
+|---|---:|---:|
+| 2015 | 9,160 | 9,480 |
+| 2016 | 9,439 | 9,767 |
+| 2017 | 9,592 | 9,910 |
+| 2018 | 9,705 | 10,006 |
+| 2019 | 9,939 | 10,235 |
 
----
+Other caveats:
 
-## How to Explore
+- Per the IHME GHDx record description, values after 2014 are IHME estimates. The CMS
+  State Health Expenditure Accounts, which IHME builds on, end in 2014. This was not
+  independently re-checked.
+- The growth-rate tables do not state their reference period. Check the IHME codebook
+  before interpreting them.
 
-1. Open the Tableau workbook in Tableau Desktop to interact with the dashboards.
-2. Use filters to explore statewise and category-specific expenditure trends.
-3. Analyze KPIs for key metrics and compare fractional spending across states.
+## Reproduce
 
----
+1. Open `Statewise_Healthcare_Spending_Analysis.twb` in Tableau Desktop 2024.3 or newer.
+2. When prompted, point the Excel connection at the file in `Dataset/`. The workbook stores
+   the author's absolute path, and its `.hyper` extract is not distributed.
+3. Re-derive every number on this page from the repository root:
 
-## Key Insights
+   ```bash
+   python -m tools.verify_data
+   python -m tools.audit
+   ```
 
-- **State-Level Trends**: Visualize differences in healthcare spending and identify outliers.
-- **Category-Specific Analysis**: Understand where the majority of healthcare funds are allocated in each state.
-- **Interactive Filters**: Dynamically explore year-wise data and adjust focus based on user-selected parameters.
+## Citation
 
----
-
-## How to Use
-
-1. Download the Tableau workbook and open it in Tableau Desktop.
-2. Navigate through the dashboards:
-   - **Dashboard 1**: Explore overall spending trends and standardized spending per person.
-   - **Dashboard 2**: Analyze fractional expenditures by category and state.
-   - **Dashboard 3**: Dive into specific categories like dental care and skilled nursing.
-3. Use the provided filters to customize your analysis.
-
----
-
-## Contribution
-
-Contributions are welcome to improve or extend the dashboards. Feel free to fork the repository and submit a pull request.
+Institute for Health Metrics and Evaluation (IHME). *United States Health Expenditure by
+State, Payer, and Type of Care, 2003-2019.* Seattle, United States of America: IHME, 2022.
